@@ -10,7 +10,7 @@ export default function Signup() {
         lastName: '',
         nic: '',
         gender: '',
-        age: '', // Changed from dateOfBirth to age
+        age: '', 
         email: '',
         password: '',
     });

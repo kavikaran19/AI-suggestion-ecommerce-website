@@ -10,7 +10,7 @@ export default function Signup() {
         lastName: '',
         nic: '',
         gender: '',
-        dateOfBirth: '',
+        age: '', // Changed from dateOfBirth to age
         email: '',
         password: '',
     });
@@ -18,7 +18,7 @@ export default function Signup() {
     const [error, setError] = useState('');
     const router = useRouter();
 
-    const { firstName, lastName, nic, gender, dateOfBirth, email, password } = formData;
+    const { firstName, lastName, nic, gender, age, email, password } = formData;
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -68,15 +68,17 @@ export default function Signup() {
                 </div>
                 <div className="flex mb-4 space-x-4">
                     <div className="flex-1">
-                        <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                        <label htmlFor="age" className="block text-sm font-medium text-gray-700">Age</label>
                         <input
-                            type="date"
-                            name="dateOfBirth"
-                            id="dateOfBirth"
-                            value={dateOfBirth}
+                            type="number"
+                            name="age" // Changed from dateOfBirth to age
+                            id="age"
+                            value={age}
                             onChange={onChange}
+                            placeholder="Age"
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                             required
+                            min="1" // Ensure age is at least 1
                         />
                     </div>
                     <div className="flex-1">

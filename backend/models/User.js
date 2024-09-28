@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -20,8 +19,8 @@ const userSchema = new mongoose.Schema({
     enum: ['Male', 'Female'], // Allowed values
     required: true,
   },
-  dateOfBirth: {
-    type: Date,
+  age: {  
+    type: Number,
     required: true,
   },
   email: {

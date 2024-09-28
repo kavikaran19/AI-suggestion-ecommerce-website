@@ -3,50 +3,49 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-/// User Registration
-// controllers/authController.js
+// User Registration
 exports.registerUser = async (req, res) => {
-    const { firstName, lastName, nic, gender, dateOfBirth, email, password } = req.body;
-  
-    try {
-      // Check if user already exists
-      let user = await User.findOne({ email });
-      if (user) {
-        return res.status(400).json({ msg: 'User with this email already exists' });
-      }
-  
-      // Check if NIC already exists
-      user = await User.findOne({ nic });
-      if (user) {
-        return res.status(400).json({ msg: 'User with this NIC already exists' });
-      }
-  
-      // Create new user
-      user = new User({
-        firstName,
-        lastName,
-        nic,
-        gender,
-        dateOfBirth,
-        email,
-        password: await bcrypt.hash(password, 10),
-      });
-  
-      await user.save();
-  
-      // Generate JWT Token
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  
-      res.status(201).json({ token, user });
-    } catch (err) {
-      if (err.code === 11000) { // Duplicate key error
-        return res.status(400).json({ msg: 'Duplicate key error', error: err.message });
-      }
-      console.error(err.message);
-      res.status(500).send('Server Error');
+  const { firstName, lastName, nic, gender, age, email, password } = req.body;
+
+  try {
+    // Check if user already exists
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ msg: 'User with this email already exists' });
     }
-  };
-  
+
+    // Check if NIC already exists
+    user = await User.findOne({ nic });
+    if (user) {
+      return res.status(400).json({ msg: 'User with this NIC already exists' });
+    }
+
+    // Create new user
+    user = new User({
+      firstName,
+      lastName,
+      nic,
+      gender,
+      age,  // Use age instead of dateOfBirth
+      email,
+      password: await bcrypt.hash(password, 10),
+    });
+
+    await user.save();
+
+    // Generate JWT Token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(201).json({ token, user });
+  } catch (err) {
+    if (err.code === 11000) { // Duplicate key error
+      return res.status(400).json({ msg: 'Duplicate key error', error: err.message });
+    }
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 // User Login
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -75,6 +74,8 @@ exports.loginUser = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        age: user.age, 
+        gender: user.gender,
       },
     });
   } catch (err) {

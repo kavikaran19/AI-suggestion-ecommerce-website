@@ -23,8 +23,16 @@ export default function Signin() {
         try {
             const response = await axios.post('http://localhost:8000/api/auth/login', formData);
             localStorage.setItem('token', response.data.token); // Store token in local storage
-             // Store token in cookies (requires setting up a server-side API to handle this)
-             Cookies.set('token', response.data.token, { expires: 1 }); // Cookie expires in 1 day
+            localStorage.setItem('age', response.data.user.age); // Store token in local storage
+            localStorage.setItem('gender', response.data.user.gender); // Store token in local storage
+            console.log("response.data.user.gender" + response.data.user.gender);
+            
+            // Store token in cookies (requires setting up a server-side API to handle this)
+            Cookies.set('token', response.data.token, { expires: 1 }); // Cookie expires in 1 day
+            // Store age and gender in cookies
+            Cookies.set('age', response.data.user.age, { expires: 1 }); // Cookie expires in 1 day
+            Cookies.set('gender', response.data.user.gender, { expires: 1 }); // Cookie expires in 1 day
+
             router.push('/categories');
         } catch (error) {
             setError('Sign in failed. Please try again.');
